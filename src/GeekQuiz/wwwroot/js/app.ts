@@ -18,7 +18,7 @@ import {Http, HTTP_BINDINGS, Headers} from 'angular2/http';
             <div class="front" [ng-class]="{flip: answered}">
                 <p class="lead">{{title}}</p>
                 <div class="row text-center">
-                    <button class="btn btn-info btn-lg option" *ng-for="#option of options" (click)="sendAnswer(option)" [disabled]="working">{{option.title}}</button>
+                    <button class="btn btn-info btn-lg option" *ng-for="#option of options" (click)="sendAnswer(option, startTime)" [disabled]="working">{{option.title}}</button>
                 </div>
             </div>
         </div>
@@ -30,24 +30,26 @@ class AppComponent implements AfterViewInit {
     public options = [];
     public correctAnswer = false;
     public working = false;
-
+    public startTime:Date;
+    public endTime: Date;
     constructor( @Inject(Http) private http: Http) {
     }
 
     answer() {
+        
+        
         return this.correctAnswer ? 'correct' : 'incorrect';
     }
 
     nextQuestion() {
         this.working = true;
-
+        
         this.answered = false;
         this.title = "loading question...";
         this.options = [];
-
+        this.startTime = new Date();
         var headers = new Headers();
         headers.append('If-Modified-Since', 'Mon, 27 Mar 1972 00:00:00 GMT');
-
         this.http.get("/api/trivia", { headers: headers })
             .map(res => res.json())
             .subscribe(
@@ -56,20 +58,23 @@ class AppComponent implements AfterViewInit {
                     this.title = question.title;
                     this.answered = false;
                     this.working = false;
+                    
                 },
                 err => {
                     this.title = "Oops... something went wrong";
                     this.working = false;
                 });
+       
     }
 
-    sendAnswer(option) {
+    sendAnswer(option, startTime) {
         this.working = true;
+        this.endTime = new Date();
+       var result= Number(this.endTime) - Number(startTime);
         var answer = { 'questionId': option.questionId, 'optionId': option.id };
 
         var headers = new Headers();
         headers.append('Content-Type', 'application/json');
-
         this.http.post('/api/trivia', JSON.stringify(answer), { headers: headers })
             .map(res => res.json())
             .subscribe(
@@ -83,9 +88,16 @@ class AppComponent implements AfterViewInit {
                     this.working = false;
                 });
     }
-
+    
     afterViewInit() {
+
         this.nextQuestion();
+
+    }
+
+    function()
+    {
+        alert(this.example);
     }
 }
 

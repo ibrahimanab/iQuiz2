@@ -29,6 +29,7 @@ var AppComponent = (function () {
         this.answered = false;
         this.title = "loading question...";
         this.options = [];
+        this.startTime = new Date();
         var headers = new http_1.Headers();
         headers.append('If-Modified-Since', 'Mon, 27 Mar 1972 00:00:00 GMT');
         this.http.get("/api/trivia", { headers: headers })
@@ -43,9 +44,11 @@ var AppComponent = (function () {
             _this.working = false;
         });
     };
-    AppComponent.prototype.sendAnswer = function (option) {
+    AppComponent.prototype.sendAnswer = function (option, startTime) {
         var _this = this;
         this.working = true;
+        this.endTime = new Date();
+        var result = Number(this.endTime) - Number(startTime);
         var answer = { 'questionId': option.questionId, 'optionId': option.id };
         var headers = new http_1.Headers();
         headers.append('Content-Type', 'application/json');
@@ -63,6 +66,9 @@ var AppComponent = (function () {
     AppComponent.prototype.afterViewInit = function () {
         this.nextQuestion();
     };
+    AppComponent.prototype.function = function () {
+        alert(this.example);
+    };
     AppComponent = __decorate([
         angular2_1.Component({
             selector: 'geekquiz-app',
@@ -70,7 +76,7 @@ var AppComponent = (function () {
         }),
         angular2_1.View({
             directives: [angular2_1.NgFor, angular2_1.NgClass],
-            template: "\n        <div class=\"flip-container text-center col-md-12\">\n            <div class=\"back\" [ng-class]=\"{flip: answered, correct: correctAnswer, incorrect:!correctAnswer}\">\n                <p class=\"lead\">{{answer()}}</p>\n                <p>\n                    <button class=\"btn btn-info btn-lg next option\" (click)=\"nextQuestion()\" [disabled]=\"working\">Next Question</button>\n                </p>\n            </div>\n            <div class=\"front\" [ng-class]=\"{flip: answered}\">\n                <p class=\"lead\">{{title}}</p>\n                <div class=\"row text-center\">\n                    <button class=\"btn btn-info btn-lg option\" *ng-for=\"#option of options\" (click)=\"sendAnswer(option)\" [disabled]=\"working\">{{option.title}}</button>\n                </div>\n            </div>\n        </div>\n    "
+            template: "\n        <div class=\"flip-container text-center col-md-12\">\n            <div class=\"back\" [ng-class]=\"{flip: answered, correct: correctAnswer, incorrect:!correctAnswer}\">\n                <p class=\"lead\">{{answer()}}</p>\n                <p>\n                    <button class=\"btn btn-info btn-lg next option\" (click)=\"nextQuestion()\" [disabled]=\"working\">Next Question</button>\n                </p>\n            </div>\n            <div class=\"front\" [ng-class]=\"{flip: answered}\">\n                <p class=\"lead\">{{title}}</p>\n                <div class=\"row text-center\">\n                    <button class=\"btn btn-info btn-lg option\" *ng-for=\"#option of options\" (click)=\"sendAnswer(option, startTime)\" [disabled]=\"working\">{{option.title}}</button>\n                </div>\n            </div>\n        </div>\n    "
         }),
         __param(0, angular2_1.Inject(http_1.Http))
     ], AppComponent);
