@@ -13,19 +13,24 @@ namespace GeekQuiz.Models
             var context = serviceProvider.GetService<TriviaDbContext>();
             context.Database.Migrate();
 
-            if (!context.TriviaQuestions.Any())
-            {
+          
                 var questions = new List<TriviaQuestion>();
+
+                
+
+
 
                 questions.Add(new TriviaQuestion
                 {
                     Title = "When was .NET first released?",
                     Options = (new TriviaOption[]
                     {
+
                         new TriviaOption { Title= "2000", IsCorrect= false },
                         new TriviaOption { Title= "2001", IsCorrect= false },
                         new TriviaOption { Title= "2002", IsCorrect= true },
-                        new TriviaOption { Title= "2003", IsCorrect= false }
+                        new TriviaOption { Title= "2003", IsCorrect= false },
+                        
                     }).ToList()
                 });
 
@@ -38,6 +43,7 @@ namespace GeekQuiz.Models
                         new TriviaOption { Title= "Initech", IsCorrect= false },
                         new TriviaOption { Title= "Fabrikam, Inc.", IsCorrect= false },
                         new TriviaOption { Title= "Northwind Traders", IsCorrect= true }
+                        
                     }).ToList()
                 });
 
@@ -50,6 +56,7 @@ namespace GeekQuiz.Models
                         new TriviaOption { Title= "Alpha4.com", IsCorrect= false },
                         new TriviaOption { Title= "Symbolics.com", IsCorrect= true },
                         new TriviaOption { Title= "InterConnect.com", IsCorrect= false }
+                         
                     }).ToList()
                 });
 
@@ -551,6 +558,6 @@ namespace GeekQuiz.Models
                 context.SaveChanges();
             }
         }
-    }
+    
 }
 

@@ -49,8 +49,10 @@ namespace GeekQuiz.Controllers
             {
                 return HttpBadRequest(ModelState);
             }
+            
 
-            answer.UserId = User.Identity.Name;
+
+            
 
             var isCorrect = await this.StoreAsync(answer);
 
@@ -86,10 +88,31 @@ namespace GeekQuiz.Controllers
 
         private async Task<bool> StoreAsync(TriviaAnswer answer)
         {
+
+
+            if (answer.UserId == "wrong")
+            {
+                answer.UserId = User.Identity.Name;
+                var Option = await this.context.TriviaOptions.FirstOrDefaultAsync(o =>
+                    o.Id == answer.OptionId
+                    && o.QuestionId == answer.QuestionId);
+                if (Option != null)
+                {
+                    answer.TriviaOption = Option;
+                    this.context.TriviaAnswers.Add(answer);
+
+                    await this.context.SaveChangesAsync();
+                }
+                return false;
+
+            }
+
+
+
+            answer.UserId = User.Identity.Name;
             var selectedOption = await this.context.TriviaOptions.FirstOrDefaultAsync(o =>
                 o.Id == answer.OptionId
                 && o.QuestionId == answer.QuestionId);
-
             if (selectedOption != null)
             {
                 answer.TriviaOption = selectedOption;

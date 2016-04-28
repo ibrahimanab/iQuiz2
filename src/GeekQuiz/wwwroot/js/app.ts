@@ -8,7 +8,12 @@ import {Http, HTTP_BINDINGS, Headers} from 'angular2/http';
 @View({
     directives: [NgFor, NgClass],
     template: `
+
+
         <div class="flip-container text-center col-md-12">
+                 
+        
+
             <div class="back" [ng-class]="{flip: answered, correct: correctAnswer, incorrect:!correctAnswer}">
                 <p class="lead">{{answer()}}</p>
                 <p>
@@ -16,10 +21,12 @@ import {Http, HTTP_BINDINGS, Headers} from 'angular2/http';
                 </p>
             </div>
             <div class="front" [ng-class]="{flip: answered}">
+                 <div class="row text-center">{{timecount}}</div> 
                 <p class="lead">{{title}}</p>
                 <div class="row text-center">
                     <button class="btn btn-info btn-lg option" *ng-for="#option of options" (click)="sendAnswer(option, startTime)" [disabled]="working">{{option.title}}</button>
                 </div>
+
             </div>
         </div>
     `
@@ -32,6 +39,8 @@ class AppComponent implements AfterViewInit {
     public working = false;
     public startTime:Date;
     public endTime: Date;
+    private timer;
+    public timecount: number; 
     constructor( @Inject(Http) private http: Http) {
     }
 
@@ -42,8 +51,14 @@ class AppComponent implements AfterViewInit {
     }
 
     nextQuestion() {
-        this.working = true;
+
+        this.timecount = 10;
         
+        this.working = true;
+       
+
+
+
         this.answered = false;
         this.title = "loading question...";
         this.options = [];
@@ -64,41 +79,89 @@ class AppComponent implements AfterViewInit {
                     this.title = "Oops... something went wrong";
                     this.working = false;
                 });
-       
+        this.timer = setInterval(() => {
+
+
+            if (this.timecount > 0) {
+                this.timecount--;
+
+
+            }
+            else {
+
+                
+                this.sendAnswer(null, this.startTime);
+            }
+        }, 1000);
+
     }
 
     sendAnswer(option, startTime) {
+      
         this.working = true;
         this.endTime = new Date();
+        clearInterval(this.timer);
        var result= Number(this.endTime) - Number(startTime);
-        var answer = { 'questionId': option.questionId, 'optionId': option.id };
+       
+       
+       var headers = new Headers();
+       headers.append('Content-Type', 'application/json');
+       
+       if (option == null)
+       {
+           
+           var wanswer = { 'questionId': this.options[0].questionId, 'optionId': this.options[0].id,'userId':"wrong"};
+          
+           this.http.post('/api/trivia', JSON.stringify(wanswer), { headers: headers })
+               .map(res => res.json())
+               .subscribe(
+               answerIsCorrect => {
+                   this.answered = true;
+                   this.correctAnswer = false;
+                   this.working = false;
+               },
+               err => {
+                   this.title = "Oops... something went wrong";
+                   this.working = false;
+               });
+          
 
-        var headers = new Headers();
-        headers.append('Content-Type', 'application/json');
+           return;
+       }
+       var answer = { 'questionId': option.questionId, 'optionId': option.id };
+       
+
+
+       
+
+
         this.http.post('/api/trivia', JSON.stringify(answer), { headers: headers })
             .map(res => res.json())
             .subscribe(
-                answerIsCorrect => {
-                    this.answered = true;
-                    this.correctAnswer = (answerIsCorrect === true);
-                    this.working = false;
-                },
-                err => {
-                    this.title = "Oops... something went wrong";
-                    this.working = false;
-                });
+            answerIsCorrect => {
+                this.answered = true;
+                this.correctAnswer = false;
+                this.working = false;
+            },
+            err => {
+                this.title = "Oops... something went wrong";
+                this.working = false;
+            });
+
+
+
+
+        
     }
     
     afterViewInit() {
 
         this.nextQuestion();
 
+       
     }
 
-    function()
-    {
-        alert(this.example);
-    }
+   
 }
 
 bootstrap(AppComponent);
