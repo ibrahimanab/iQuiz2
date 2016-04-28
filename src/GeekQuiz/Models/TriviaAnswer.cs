@@ -14,6 +14,9 @@ namespace GeekQuiz.Models
         
         public int QuestionId { get; set; }
 
+    
+
+
         [JsonIgnore]
         public virtual TriviaOption TriviaOption { get; set; }
     }

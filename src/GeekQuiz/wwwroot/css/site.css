@@ -63,6 +63,9 @@ div.incorrect p {
     color: red;
 }
 
+div.time p {
+    color: green;
+}
 .btn {
     border-radius: 0;
 }
