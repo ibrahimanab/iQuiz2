@@ -24,7 +24,7 @@ var AppComponent = (function () {
     };
     AppComponent.prototype.nextQuestion = function () {
         var _this = this;
-        this.timecount = 10;
+        this.timecount = 60;
         this.working = true;
         this.answered = false;
         this.title = "loading question...";
@@ -66,7 +66,7 @@ var AppComponent = (function () {
                 .map(function (res) { return res.json(); })
                 .subscribe(function (answerIsCorrect) {
                 _this.answered = true;
-                _this.correctAnswer = false;
+                _this.correctAnswer = true;
                 _this.working = false;
             }, function (err) {
                 _this.title = "Oops... something went wrong";
@@ -79,7 +79,8 @@ var AppComponent = (function () {
             .map(function (res) { return res.json(); })
             .subscribe(function (answerIsCorrect) {
             _this.answered = true;
-            _this.correctAnswer = false;
+            _this.correctAnswer =
+                (answerIsCorrect === true);
             _this.working = false;
         }, function (err) {
             _this.title = "Oops... something went wrong";

@@ -46,19 +46,19 @@ class AppComponent implements AfterViewInit {
 
     answer() {
         
-        
+       
         return this.correctAnswer ? 'correct' : 'incorrect';
     }
 
     nextQuestion() {
 
-        this.timecount = 10;
+        this.timecount = 60;
         
         this.working = true;
        
 
 
-
+        
         this.answered = false;
         this.title = "loading question...";
         this.options = [];
@@ -117,7 +117,7 @@ class AppComponent implements AfterViewInit {
                .subscribe(
                answerIsCorrect => {
                    this.answered = true;
-                   this.correctAnswer = false;
+                   this.correctAnswer = true;
                    this.working = false;
                },
                err => {
@@ -140,7 +140,8 @@ class AppComponent implements AfterViewInit {
             .subscribe(
             answerIsCorrect => {
                 this.answered = true;
-                this.correctAnswer = false;
+                this.correctAnswer =
+                    (answerIsCorrect === true);
                 this.working = false;
             },
             err => {
@@ -149,7 +150,7 @@ class AppComponent implements AfterViewInit {
             });
 
 
-
+        
 
         
     }
