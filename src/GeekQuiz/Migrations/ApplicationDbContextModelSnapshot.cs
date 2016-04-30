@@ -69,9 +69,9 @@ namespace GeekQuiz.Migrations
                     b.Property<int>("RulesID")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("FirstMidName");
+                    b.Property<int>("NumOfQuestion");
 
-                    b.Property<string>("LastName")
+                    b.Property<int>("timeperquestion")
                         .IsRequired();
 
                     b.HasKey("RulesID");

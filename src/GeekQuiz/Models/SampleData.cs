@@ -12,9 +12,8 @@ namespace GeekQuiz.Models
         {
             var context = serviceProvider.GetService<TriviaDbContext>();
             context.Database.Migrate();
-
-          
-                var questions = new List<TriviaQuestion>();
+           
+            var questions = new List<TriviaQuestion>();
 
                 
 
@@ -554,7 +553,7 @@ namespace GeekQuiz.Models
                 });
 
                 context.TriviaQuestions.AddRange(questions);
-
+           
                 context.SaveChanges();
             }
         }

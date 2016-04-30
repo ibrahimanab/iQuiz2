@@ -1,16 +1,14 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-
-
-
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace GeekQuiz.Models
 {
     public class Rules
     {
-        [ScaffoldColumn(false)]
+        [Column(Order = 1), DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int RulesID { get; set; }
-        [Required]
+        
         [Display(Name = "number of question")]
         public int NumOfQuestion { get; set; }
 
