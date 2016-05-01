@@ -16,10 +16,8 @@ namespace GeekQuiz.Controllers
     public class HomeController : Controller
     {
 
-        private RulesDbContext _context;
 
-        public HomeController(RulesDbContext context) { _context = context; }
-
+        private TriviaDbContext context;
 
 
 
@@ -33,18 +31,7 @@ namespace GeekQuiz.Controllers
 
 
 
-        [HttpPost]
-        public IActionResult Create(Rules rules)
-        {
-            if (ModelState.IsValid)
-            {
-                _context.Rules.Add(rules);
-                _context.SaveChanges();
-                return RedirectToAction("Index");
-            }
-            return View(rules);
-        }
-
+       
 
         public IActionResult Index()
         {
@@ -77,6 +64,8 @@ namespace GeekQuiz.Controllers
         }
         public IActionResult Rules()
         {
+
+
             return View();
         }
 

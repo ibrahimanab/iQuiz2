@@ -66,7 +66,7 @@ var AppComponent = (function () {
                 .map(function (res) { return res.json(); })
                 .subscribe(function (answerIsCorrect) {
                 _this.answered = true;
-                _this.correctAnswer = true;
+                _this.correctAnswer = false;
                 _this.working = false;
             }, function (err) {
                 _this.title = "Oops... something went wrong";

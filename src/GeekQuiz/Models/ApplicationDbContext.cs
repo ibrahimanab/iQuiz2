@@ -4,7 +4,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.Data.Entity;
-using GeekQuiz.Models;
 
 namespace GeekQuiz.Models
 {
@@ -17,6 +16,5 @@ namespace GeekQuiz.Models
             // For example, you can rename the ASP.NET Identity table names and more.
             // Add your customizations after calling base.OnModelCreating(builder);
         }
-        
     }
 }

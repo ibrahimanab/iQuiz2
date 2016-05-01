@@ -32,6 +32,11 @@ namespace GeekQuiz.Models
             builder.Entity<TriviaQuestion>()
                 .HasMany(q => q.Options)
                 .WithOne(o => o.TriviaQuestion);
+
+           
+                
+
+
         }
         
         public DbSet<TriviaQuestion> TriviaQuestions { get; set; }
@@ -39,5 +44,8 @@ namespace GeekQuiz.Models
         public DbSet<TriviaOption> TriviaOptions { get; set; }
 
         public DbSet<TriviaAnswer> TriviaAnswers { get; set; }
+
+        public DbSet<Rules> Rules { get; set; }
+
     }
 }

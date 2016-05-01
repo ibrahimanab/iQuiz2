@@ -63,9 +63,6 @@ div.incorrect p {
     color: red;
 }
 
-div.time p {
-    color: green;
-}
 .btn {
     border-radius: 0;
 }
@@ -77,3 +74,13 @@ div.time p {
     .flip-container div.front.flip, .flip-container div.back {
         display: none;
     }
+
+
+
+
+
+
+
+
+
+
