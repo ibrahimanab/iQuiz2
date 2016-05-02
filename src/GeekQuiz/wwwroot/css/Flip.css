@@ -7,7 +7,7 @@
 .flip-container {
     position: relative;
     margin: 0;
-    width: 90%;
+    width: 100%;
 }
 
 /* size*/
@@ -73,7 +73,7 @@
     }
 
     .front, .back {
-        width: 97%;
+        width: 100%;
     }
 }
 

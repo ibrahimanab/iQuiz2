@@ -11,7 +11,7 @@ import {Http, HTTP_BINDINGS, Headers} from 'angular2/http';
 @View({
     directives: [NgFor, NgClass],
     template: `
-        <div class="flip-container text-center col-md-12">
+        <div class="flip-container text-center ">
             <div class="back" [ng-class]="{flip: answered, correct: correctAnswer, incorrect:!correctAnswer}">
                 <p class="lead">{{answer()}}</p>
                 <p>
@@ -21,7 +21,7 @@ import {Http, HTTP_BINDINGS, Headers} from 'angular2/http';
             <div class="front" [ng-class]="{flip: answered}">
                 <p class="lead">{{timecount}}</p>
                 <p class="lead">{{title}}</p>
-                <div class="row text-center">
+                <div class="container text-center">
                     <button class="btn btn-info btn-lg option" *ng-for="#option of options" (click)="sendAnswer(option)" [disabled]="working">{{option.title}}</button>
                 </div>
                 <div>{{num}}</div>
@@ -67,7 +67,7 @@ class AppComponent implements AfterViewInit {
         }, 1000);
 
 
-
+       
         this.http.get("/api/trivia", { headers: headers })
             .map(res => res.json())
             .subscribe(
