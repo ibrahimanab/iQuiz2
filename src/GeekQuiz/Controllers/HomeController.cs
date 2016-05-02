@@ -35,12 +35,13 @@ namespace GeekQuiz.Controllers
         }
 
         //called from angular http object
-        public async Task<Rules> gettime()
+        public Rules gettime()
         {
 
-           
-            
-             return  context.Rules.Where(a => a.timeperquestion == 30).First();
+            var rule= new Rules();
+            rule.timeperquestion = 30;
+            return rule;
+               //return context.Rules.Where(a => a.timeperquestion == 30).First();
         }
 
 
