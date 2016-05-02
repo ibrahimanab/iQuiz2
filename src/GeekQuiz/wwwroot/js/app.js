@@ -18,20 +18,27 @@ var AppComponent = (function () {
         this.options = [];
         this.correctAnswer = false;
         this.working = false;
+        this.timecount = 15;
     }
     AppComponent.prototype.answer = function () {
         return this.correctAnswer ? 'correct' : 'incorrect';
     };
     AppComponent.prototype.nextQuestion = function () {
         var _this = this;
-        this.timecount = 60;
         this.working = true;
         this.answered = false;
         this.title = "loading question...";
         this.options = [];
-        this.startTime = new Date();
         var headers = new http_1.Headers();
         headers.append('If-Modified-Since', 'Mon, 27 Mar 1972 00:00:00 GMT');
+        this.http.get("/Home/gettime", { headers: headers }).map(function (res) { return res.json(); }).subscribe(function (q) { _this.timecount = q.timeperquestion; });
+        this.timer = setInterval(function (t) {
+            _this.timecount--;
+            if (_this.timecount == 0) {
+                _this.Timeup();
+                clearInterval(_this.timer);
+            }
+        }, 1000);
         this.http.get("/api/trivia", { headers: headers })
             .map(function (res) { return res.json(); })
             .subscribe(function (question) {
@@ -43,44 +50,37 @@ var AppComponent = (function () {
             _this.title = "Oops... something went wrong";
             _this.working = false;
         });
-        this.timer = setInterval(function () {
-            if (_this.timecount > 0) {
-                _this.timecount--;
-            }
-            else {
-                _this.sendAnswer(null, _this.startTime);
-            }
-        }, 1000);
     };
-    AppComponent.prototype.sendAnswer = function (option, startTime) {
+    AppComponent.prototype.sendAnswer = function (option) {
         var _this = this;
         this.working = true;
-        this.endTime = new Date();
         clearInterval(this.timer);
-        var result = Number(this.endTime) - Number(startTime);
+        var answer = { 'questionId': option.questionId, 'optionId': option.id };
         var headers = new http_1.Headers();
         headers.append('Content-Type', 'application/json');
-        if (option == null) {
-            var wanswer = { 'questionId': this.options[0].questionId, 'optionId': this.options[0].id, 'userId': "wrong" };
-            this.http.post('/api/trivia', JSON.stringify(wanswer), { headers: headers })
-                .map(function (res) { return res.json(); })
-                .subscribe(function (answerIsCorrect) {
-                _this.answered = true;
-                _this.correctAnswer = false;
-                _this.working = false;
-            }, function (err) {
-                _this.title = "Oops... something went wrong";
-                _this.working = false;
-            });
-            return;
-        }
-        var answer = { 'questionId': option.questionId, 'optionId': option.id };
         this.http.post('/api/trivia', JSON.stringify(answer), { headers: headers })
             .map(function (res) { return res.json(); })
             .subscribe(function (answerIsCorrect) {
             _this.answered = true;
-            _this.correctAnswer =
-                (answerIsCorrect === true);
+            _this.correctAnswer = (answerIsCorrect === true);
+            _this.working = false;
+        }, function (err) {
+            _this.title = "Oops... something went wrong";
+            _this.working = false;
+        });
+    };
+    AppComponent.prototype.Timeup = function () {
+        var _this = this;
+        clearInterval(this.timer);
+        this.working = true;
+        var answer = { 'questionId': this.options[0].questionId, 'optionId': this.options[0].id, 'userId': 'wrong' };
+        var headers = new http_1.Headers();
+        headers.append('Content-Type', 'application/json');
+        this.http.post('/api/trivia/', JSON.stringify(answer), { headers: headers })
+            .map(function (res) { return res.json(); })
+            .subscribe(function (answerIsCorrect) {
+            _this.answered = true;
+            _this.correctAnswer = false;
             _this.working = false;
         }, function (err) {
             _this.title = "Oops... something went wrong";
@@ -97,7 +97,7 @@ var AppComponent = (function () {
         }),
         angular2_1.View({
             directives: [angular2_1.NgFor, angular2_1.NgClass],
-            template: "\n\n\n        <div class=\"flip-container text-center col-md-12\">\n                 \n        \n\n            <div class=\"back\" [ng-class]=\"{flip: answered, correct: correctAnswer, incorrect:!correctAnswer}\">\n                <p class=\"lead\">{{answer()}}</p>\n                <p>\n                    <button class=\"btn btn-info btn-lg next option\" (click)=\"nextQuestion()\" [disabled]=\"working\">Next Question</button>\n                </p>\n            </div>\n            <div class=\"front\" [ng-class]=\"{flip: answered}\">\n                 <div class=\"row text-center\">{{timecount}}</div> \n                <p class=\"lead\">{{title}}</p>\n                <div class=\"row text-center\">\n                    <button class=\"btn btn-info btn-lg option\" *ng-for=\"#option of options\" (click)=\"sendAnswer(option, startTime)\" [disabled]=\"working\">{{option.title}}</button>\n                </div>\n\n            </div>\n        </div>\n    "
+            template: "\n        <div class=\"flip-container text-center col-md-12\">\n            <div class=\"back\" [ng-class]=\"{flip: answered, correct: correctAnswer, incorrect:!correctAnswer}\">\n                <p class=\"lead\">{{answer()}}</p>\n                <p>\n                    <button class=\"btn btn-info btn-lg next option\" (click)=\"nextQuestion()\" [disabled]=\"working\">Next Question</button>\n                </p>\n            </div>\n            <div class=\"front\" [ng-class]=\"{flip: answered}\">\n                <p class=\"lead\">{{timecount}}</p>\n                <p class=\"lead\">{{title}}</p>\n                <div class=\"row text-center\">\n                    <button class=\"btn btn-info btn-lg option\" *ng-for=\"#option of options\" (click)=\"sendAnswer(option)\" [disabled]=\"working\">{{option.title}}</button>\n                </div>\n                <div>{{num}}</div>\n            </div>\n        </div>\n    "
         }),
         __param(0, angular2_1.Inject(http_1.Http))
     ], AppComponent);

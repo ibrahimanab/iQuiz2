@@ -117,7 +117,7 @@ namespace GeekQuiz.Controllers
             {
                 answer.TriviaOption = selectedOption;
                 this.context.TriviaAnswers.Add(answer);
-
+               
                 await this.context.SaveChangesAsync();
             }
 

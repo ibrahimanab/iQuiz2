@@ -33,7 +33,7 @@ namespace GeekQuiz.Models
                 .HasMany(q => q.Options)
                 .WithOne(o => o.TriviaQuestion);
 
-           
+            builder.Entity<Rules>().HasKey(r => new { r.RulesID });
                 
 
 

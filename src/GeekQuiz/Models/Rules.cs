@@ -6,7 +6,7 @@ namespace GeekQuiz.Models
 {
     public class Rules
     {
-        [Column(Order = 1), DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [ DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int RulesID { get; set; }
         
         [Display(Name = "number of question")]

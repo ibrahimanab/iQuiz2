@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNet.Mvc;
 using Microsoft.AspNet.Authorization;
 using GeekQuiz.Models;
+using Microsoft.AspNet.Http.Internal;
 
 namespace GeekQuiz.Controllers
 {
@@ -16,20 +17,36 @@ namespace GeekQuiz.Controllers
     public class HomeController : Controller
     {
 
-
+       
         private TriviaDbContext context;
 
-
+        public HomeController(TriviaDbContext context)
+        {
+            this.context = context;
+        }
 
         [HttpPost]
-        public ActionResult Index(string Answer)
+        public async Task<ActionResult> Rules(Rules model)
         {
-            var x = Answer;
 
+            context.Rules.Add(model);
+            await this.context.SaveChangesAsync();
             return View("Startgame");
         }
 
+        //called from angular http object
+        public async Task<Rules> gettime()
+        {
 
+           
+            
+             return  context.Rules.Where(a => a.timeperquestion == 30).First();
+        }
+
+
+
+
+    
 
        
 
@@ -38,12 +55,7 @@ namespace GeekQuiz.Controllers
             return View();
         }
 
-        public IActionResult Startgame()
-        {
-          
-            return View();
-        }
-
+       
         public IActionResult About()
         {
             ViewData["Message"] = "Your application description page.";

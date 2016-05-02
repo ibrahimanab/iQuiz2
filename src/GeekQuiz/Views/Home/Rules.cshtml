@@ -1,59 +1,67 @@
-﻿@{
+﻿
+
+@model Rules
+@{
     ViewData["Title"] = "Rules";
 }
 
-<div class="container">
+
     
-    <h2>Rules for game room</h2>
-
-   
-
-
-    @using (Html.BeginForm("Index", "Home"))
-    {
-    <div class="container">
 
         <h2>Rules for game room</h2>
 
-        <h2>Number of questions</h2>
 
-        <div class="btn-group" data-toggle="buttons" style="color:white;">
-            <label class="btn btn-primary">
-                @Html.RadioButton("NumberOfQusetions", "10") 10
-            </label>
-            <label class="btn btn-primary">
-                @Html.RadioButton("NumberOfQusetions", "15") 15
-            </label>
-            <label class="btn btn-primary active">
-                @Html.RadioButton("NumberOfQusetions", "20") 20
-            </label>
+
+
+        @using (Html.BeginForm("Rules", "Home"))
+        {
+        <div class="container">
+
+
+          
+           
+
+
+
+            <h2>Number of questions</h2>
+
+            <div class="btn-group" data-toggle="buttons" style="color:white;">
+                <label class="btn btn-primary">
+                    @Html.RadioButtonFor(m=>m.NumOfQuestion,10) 10
+                </label>
+                <label class="btn btn-primary">
+                    @Html.RadioButtonFor(m=>m.NumOfQuestion,15) 15
+                </label>
+                <label class="btn btn-primary active">
+                    @Html.RadioButtonFor(m=>m.NumOfQuestion, 15) 20
+                </label>
+            </div>
+
+            <h2>Time per question (in seconds)</h2>
+
+            <div class="btn-group" data-toggle="buttons">
+                <label class="btn btn-primary">
+                    @Html.RadioButtonFor(m=>m.timeperquestion, 25) 25
+                </label>
+                <label class="btn btn-primary">
+                    @Html.RadioButtonFor(m=>m.timeperquestion, 30) 30
+                </label>
+                <label class="btn btn-primary active">
+                    @Html.RadioButtonFor(m=>m.timeperquestion, 40) 40
+                </label>
+                <label class="btn btn-primary ">
+                    @Html.RadioButtonFor(m=>m.timeperquestion, 50) 50
+                </label>
+
+            </div>
+            <br />
+            <br />
+            <input class="btn btn-success" type="submit" value="Startgame" />
         </div>
 
-        <h2>Time per question (in seconds)</h2>
+        }
 
-        <div class="btn-group" data-toggle="buttons">
-            <label class="btn btn-primary">
-                @Html.RadioButton("time", "10") 5
-            </label>
-            <label class="btn btn-primary">
-                @Html.RadioButton("time", "10") 10
-            </label>
-            <label class="btn btn-primary active">
-                @Html.RadioButton("time", "10") 15
-            </label>
-            <label class="btn btn-primary ">
-                @Html.RadioButton("time", "10") 20
-            </label>
 
-        </div>
-        <br/>
-        <br />
-        <input class="btn btn-success" type="submit" value="Startgame" />
-    </div>
-   
-}
-
-    
 
 
 
