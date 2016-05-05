@@ -33,7 +33,7 @@ namespace GeekQuiz.Models
                 .HasMany(q => q.Options)
                 .WithOne(o => o.TriviaQuestion);
 
-            builder.Entity<Rules>().HasKey(r => new { r.RulesID });
+            builder.Entity<Rooms>().HasKey(r => new { r.RulesID });
                 
 
 
@@ -45,7 +45,7 @@ namespace GeekQuiz.Models
 
         public DbSet<TriviaAnswer> TriviaAnswers { get; set; }
 
-        public DbSet<Rules> Rules { get; set; }
+        public DbSet<Rooms> Rooms { get; set; }
 
     }
 }
