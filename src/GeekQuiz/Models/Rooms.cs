@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace GeekQuiz.Models
 {
-    public class Rules
+    public class Rooms
     {
         [ DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int RulesID { get; set; }
