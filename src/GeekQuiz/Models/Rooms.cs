@@ -6,6 +6,13 @@ namespace GeekQuiz.Models
 {
     public class Rooms
     {
+        public enum Catrgory {
+            SPORT=1,
+            HISTORY=2,
+            
+
+        }
+
         [ DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int RulesID { get; set; }
         
@@ -15,6 +22,12 @@ namespace GeekQuiz.Models
         [Display(Name = "time per qustion")]
         public int timeperquestion { get; set; }
 
-       
+        public int player1id { get; set; }
+
+        public int player2id { get; set; }
+
+        public int lastquestionid { get; set; }
+
+        public Catrgory catgory { get; set; }
     }
 }

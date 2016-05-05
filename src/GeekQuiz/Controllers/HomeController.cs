@@ -26,19 +26,19 @@ namespace GeekQuiz.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> Rules(Rules model)
+        public async Task<ActionResult> Rules(Rooms model)
         {
 
-            context.Rules.Add(model);
+            context.Rooms.Add(model);
             await this.context.SaveChangesAsync();
             return View("Startgame");
         }
 
         //called from angular http object
-        public Rules gettime()
+        public Rooms gettime()
         {
 
-            var rule= new Rules();
+            var rule= new Rooms();
             rule.timeperquestion = 30;
             return rule;
                //return context.Rules.Where(a => a.timeperquestion == 30).First();
