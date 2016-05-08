@@ -22,9 +22,9 @@ namespace GeekQuiz.Models
         [Display(Name = "time per qustion")]
         public int timeperquestion { get; set; }
 
-        public int player1id { get; set; }
+        public string player1id { get; set; }
 
-        public int player2id { get; set; }
+        public string player2id { get; set; }
 
         public int lastquestionid { get; set; }
 

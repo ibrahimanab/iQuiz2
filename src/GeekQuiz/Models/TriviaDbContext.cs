@@ -35,8 +35,6 @@ namespace GeekQuiz.Models
 
             builder.Entity<Rooms>().HasKey(r => new { r.RulesID });
                 
-
-
         }
         
         public DbSet<TriviaQuestion> TriviaQuestions { get; set; }
@@ -46,6 +44,7 @@ namespace GeekQuiz.Models
         public DbSet<TriviaAnswer> TriviaAnswers { get; set; }
 
         public DbSet<Rooms> Rooms { get; set; }
+        public DbSet<UserAtrr> UserAtrr { get; set; }
 
     }
 }

@@ -7,5 +7,12 @@ namespace GeekQuiz.Models
 {
     public class UserAtrr
     {
+        public string userID { get; set; }
+
+        public bool cratedGame { get; set; }
+
+        public int?  startTime { get; set; }
+
+        public int? endTime { get; set; }
     }
 }
